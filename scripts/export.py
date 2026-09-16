@@ -1,14 +1,21 @@
 # /// script
-# requires-python = ">=3.12"
+# requires-python = ">=3.14,<3.15"
 # dependencies = [
-#     "kokoro==0.8.4",
-#     "numpy",
+#     "kokoro>=0.9.4",
+#     "misaki[en]==0.9.4+py314.1",
+#     "numpy>=2.5.3,<3",
 #     "coloredlogs",
-#     "onnx>=1.17.0",
-#     "onnxruntime>=1.20.1",
+#     "onnx>=1.22.0,<2",
+#     "onnx-ir>=1.0.0,<2",
+#     "onnxruntime>=1.30.0,<2",
 #     "psutil",
-#     "onnxscript>=0.5.0",
+#     "onnxscript>=0.7.2,<0.8",
+#     "torch>=2.14.0,<3",
 # ]
+#
+# [tool.uv.sources]
+# kokoro = { path = "../../kokoro" }
+# misaki = { path = "../../misaki", editable = true }
 #
 # ///
 
@@ -194,18 +201,19 @@ def quantize(path: Path, fp16: bool, int8: bool) -> list[Path]:
     written = []
 
     if fp16:
-        # onnxconverter_common leaves this graph with mismatched Cast types,
-        # onnxruntime's own converter handles them and the Loop subgraph
-        from onnxruntime.transformers.onnx_model import OnnxModel
+        import onnx_ir as ir
+        from onnxruntime.transformers.float16 import convert_float_to_float16
 
         target = path.with_suffix(".fp16.onnx")
-        graph = OnnxModel(onnx.load(str(path)))
-        # keep_io_types leaves inputs and outputs float32, so every variant
-        # is called exactly the same way
-        graph.convert_float_to_float16(
-            keep_io_types=True, use_symbolic_shape_infer=False
-        )
-        graph.save_model_to_file(str(target))
+        # The OnnxModel wrapper also runs symbolic Cast optimizations, which
+        # fail on this graph with ONNX 1.22. Convert and validate directly.
+        graph = convert_float_to_float16(onnx.load(str(path)), keep_io_types=True)
+        model = ir.from_proto(graph)
+        # Loop bodies capture outer values, so ordering must include subgraphs.
+        model.graph.sort()
+        graph = ir.to_proto(model)
+        onnx.checker.check_model(graph)
+        onnx.save(graph, str(target))
         written.append(target)
 
     if int8:

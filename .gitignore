@@ -27,5 +27,7 @@ espeak-ng-data/
 .venv
 models/
 .env.local
+.env
+.playwright-mcp/
 *.mp4
 *.txt

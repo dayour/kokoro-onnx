@@ -6,12 +6,15 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: astral-sh/setup-uv@v5
+      - uses: actions/checkout@v7.0.1
+      - uses: astral-sh/setup-uv@v10.1.0
+        with:
+          python-version: "3.14"
       - name: Test
         env:
           UV_PUBLISH_TOKEN: ${{ secrets.PYPI_TOKEN }}
         run: |
-          uv sync
+          uv sync --locked
+          uv run --locked python -m unittest discover -s tests -v
           uv build
           uv publish

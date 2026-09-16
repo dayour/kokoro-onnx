@@ -355,7 +355,7 @@ class Kokoro:
         trim: bool = True,
         sentence_pause: float = 0.25,
         clause_pause: float = 0.1,
-    ) -> AsyncGenerator[tuple[NDArray[np.float32], int], None]:
+    ) -> AsyncGenerator[tuple[NDArray[np.float32], int]]:
         """
         Stream audio creation asynchronously in the background, yielding chunks as they are processed.
 

@@ -1,10 +1,10 @@
 # /// script
-# requires-python = ">=3.12"
+# requires-python = ">=3.14,<3.15"
 # dependencies = [
-#     "numpy==2.0.2",
+#     "numpy>=2.5.3,<3",
 #     "requests",
-#     "torch==2.5.1",
-#     "tqdm==4.67.1",
+#     "torch>=2.14.0,<3",
+#     "tqdm>=4.67.1",
 # ]
 # ///
 """
@@ -53,9 +53,7 @@ def download_config():
     )
     resp.raise_for_status()
     content = resp.content
-    with open(
-        Path(__file__).parent / "../src/kokoro_onnx/config.json", "wb", encoding="utf-8"
-    ) as fp:
+    with open(Path(__file__).parent / "../src/kokoro_onnx/config.json", "wb") as fp:
         fp.write(content)
 
 
@@ -75,11 +73,11 @@ def download_voices(voice_url: str, names: list[str], npz_path: str):
         voices[name] = data
 
     # Save all voices to a single .npz file
-    with open(npz_path, "wb", encoding="utf-8") as f:
+    with open(npz_path, "wb") as f:
         np.savez(f, **voices)
 
-        mb_size = os.path.getsize(npz_path) // 1000 // 1000
-        print(f"Created {npz_path} ({mb_size}MB)")
+    mb_size = os.path.getsize(npz_path) // 1000 // 1000
+    print(f"Created {npz_path} ({mb_size}MB)")
 
 
 def main():
@@ -95,4 +93,5 @@ def main():
         download_config()
 
 
-main()
+if __name__ == "__main__":
+    main()

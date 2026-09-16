@@ -10,7 +10,7 @@ Usage:
     wget https://huggingface.co/thewh1teagle/kokoro-hebrew-nc/resolve/main/voices-hebrew.bin
     wget https://huggingface.co/thewh1teagle/renikud/resolve/neobert-130m/model.onnx -O renikud.onnx
 4. Run
-    uv venv --seed -p 3.12
+    uv venv --seed -p 3.14
     source .venv/bin/activate
     uv pip install -U kokoro-onnx soundfile renikud-onnx
     uv run main.py

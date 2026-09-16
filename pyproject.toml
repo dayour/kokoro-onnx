@@ -6,18 +6,21 @@ readme = "README.md"
 authors = [
     { name = "thewh1teagle", email = "61390950+thewh1teagle@users.noreply.github.com" },
 ]
-requires-python = ">=3.10,<3.14"
+requires-python = ">=3.14,<3.15"
+classifiers = [
+    "Programming Language :: Python :: 3.14",
+]
 dependencies = [
-    "onnxruntime>=1.20.1",
+    "onnxruntime>=1.30.0,<2",
     "espeakng-loader>=0.2.4",
     "phonemizer>=3.4.0",
-    "numpy>=2.0.2",
+    "numpy>=2.5.3,<3",
 ]
 
 [project.urls]
-Homepage = "https://github.com/thewh1teagle/kokoro-onnx"
-Repository = "https://github.com/thewh1teagle/kokoro-onnx"
-Issues = "https://github.com/thewh1teagle/kokoro-onnx/issues"
+Homepage = "https://github.com/dayour/kokoro-onnx"
+Repository = "https://github.com/dayour/kokoro-onnx"
+Issues = "https://github.com/dayour/kokoro-onnx/issues"
 
 
 [project.optional-dependencies]
@@ -25,15 +28,23 @@ Issues = "https://github.com/thewh1teagle/kokoro-onnx/issues"
 # Install with kokoro-onnx[gpu]
 gpu = [
     # onnxruntime-gpu is not available on Linux ARM or macOS
-    "onnxruntime-gpu>=1.20.1; platform_machine == 'x86_64' and sys_platform != 'darwin'",
+    "onnxruntime-gpu[cuda,cudnn]>=1.30.0,<2; (platform_machine == 'x86_64' or platform_machine == 'AMD64') and sys_platform != 'darwin'",
 ]
 
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling>=1.32.0,<2"]
 build-backend = "hatchling.build"
 
 [dependency-groups]
-dev = ["ruff>=0.16.3", "sounddevice>=0.5.1", "soundfile>=0.13.0"]
+dev = ["ruff>=0.16.7,<1", "sounddevice>=0.5.6,<1", "soundfile>=0.14.0,<1"]
+
+[tool.uv]
+required-environments = [
+    "sys_platform == 'win32' and platform_machine == 'AMD64'",
+    "sys_platform == 'linux' and platform_machine == 'x86_64'",
+    "sys_platform == 'linux' and platform_machine == 'aarch64'",
+    "sys_platform == 'darwin' and platform_machine == 'arm64'",
+]
 
 [tool.ruff]
 required-version = ">=0.16.0"

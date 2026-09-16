@@ -1,20 +1,23 @@
+# /// script
+# requires-python = ">=3.14,<3.15"
+# dependencies = ["kokoro-onnx", "soundfile", "misaki[ja]==0.9.4+py314.1"]
+# [tool.uv.sources]
+# kokoro-onnx = { path = "../" }
+# misaki = { path = "../../misaki", editable = true }
+# ///
 """
 Usage:
 1.
     Install uv from https://docs.astral.sh/uv/getting-started/installation
 2.
-    Copy this file to new folder
-3.
-    Run
-    uv venv -p 3.12
-    uv pip install -U kokoro-onnx soundfile 'misaki-fork[ja]'
+    Use this repository beside the Python 3.14 kokoro and misaki checkouts.
 3.
     Download these files
     https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.1/kokoro-v1.1-zh.onnx
     https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.1/voices-v1.1-zh.bin
     https://huggingface.co/hexgrad/Kokoro-82M-v1.1-zh/raw/main/config.json
 4. Run
-    uv run main.py
+    uv run examples/japanese.py
 """
 
 import soundfile as sf

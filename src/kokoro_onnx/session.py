@@ -43,16 +43,16 @@ def _installed(distribution: str) -> bool:
 def resolve_providers() -> list[str]:
     """Pick the execution providers to run the model with.
 
-    ONNX_PROVIDER wins if set, otherwise every available provider is used when
-    an accelerated onnxruntime distribution is installed (kokoro-onnx[gpu]),
-    and plain CPU otherwise.
+    ONNX_PROVIDER wins if set. GPU installations prefer CUDA without assuming
+    TensorRT is installed; other accelerated distributions use their available
+    providers, and CPU installations use plain CPU.
     """
     available = rt.get_available_providers()
 
     env_provider = os.getenv("ONNX_PROVIDER")
     if env_provider:
         if env_provider not in available:
-            log.warning(
+            raise ValueError(
                 f"ONNX_PROVIDER={env_provider} is not available in this onnxruntime "
                 f"build, available providers: {available}"
             )
@@ -61,6 +61,14 @@ def resolve_providers() -> list[str]:
     accelerated = [d for d in _ACCELERATED_DISTRIBUTIONS if _installed(d)]
     if accelerated:
         log.debug(f"Accelerated onnxruntime found: {accelerated}")
+        if "onnxruntime-gpu" in accelerated:
+            if "CUDAExecutionProvider" not in available:
+                raise RuntimeError(
+                    "onnxruntime-gpu is installed but the imported onnxruntime "
+                    "module has no CUDA provider. The CPU and GPU distributions "
+                    "share files; reinstall onnxruntime-gpu after onnxruntime."
+                )
+            return [p for p in available if p != "TensorrtExecutionProvider"]
         return available
 
     return ["CPUExecutionProvider"]
@@ -70,7 +78,20 @@ def create_session(model_path: str) -> rt.InferenceSession:
     """Load the model on the providers this installation can use."""
     providers = resolve_providers()
     log.debug(f"Providers: {providers}")
-    return rt.InferenceSession(model_path, providers=providers)
+    if "CUDAExecutionProvider" in providers:
+        rt.preload_dlls()
+    session = rt.InferenceSession(model_path, providers=providers)
+    required = os.getenv("ONNX_PROVIDER") or None
+    if required is None and "CUDAExecutionProvider" in providers:
+        required = "CUDAExecutionProvider"
+    if required and required not in session.get_providers():
+        raise RuntimeError(
+            f"{required} could not initialize; refusing an implicit CPU fallback. "
+            "Check its runtime installation (NVIDIA driver, CUDA 13 and cuDNN 9 "
+            "for CUDA), "
+            "or set ONNX_PROVIDER=CPUExecutionProvider to select CPU explicitly."
+        )
+    return session
 
 
 def embedded_vocab(session: rt.InferenceSession) -> dict:

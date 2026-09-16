@@ -12,6 +12,23 @@ Before contributing, **please open a [new issue](https://github.com/thewh1teagle
 
 We strongly recommend using [uv](https://docs.astral.sh/uv/getting-started/installation) for development, along with the Visual Studio Code extension suggested in the repository's recommendations.
 
+The default interpreter is Python 3.14. Install the locked environment and run
+the model-free tests with:
+
+```console
+uv sync --locked
+uv run --locked python -m unittest discover -s tests -v
+```
+
+Python 3.14 is the minimum and default interpreter. CI covers Python 3.14
+on Linux x64/ARM64, Windows x64, and Apple Silicon macOS.
+
+The integration tests run when `KOKORO_TEST_MODEL` and `KOKORO_TEST_VOICES`
+point to a downloaded ONNX model and voices file. Without both files they are
+skipped; no network downloads or audio device are required for unit tests.
+Voice-fetch tests additionally require the script's NumPy, requests, PyTorch,
+and tqdm dependencies.
+
 Before submitting a pull request, please ensure your code meets the project's formatting and linting standards by running:
 
 ```console
