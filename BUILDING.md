@@ -3,6 +3,24 @@
 Build and publish with Python 3.14, the minimum and default interpreter.
 Package builds require Hatchling 1.32+ (below 2.0).
 
+## GitHub release artifacts
+
+Build from an isolated archive of committed source, not an existing `dist` folder:
+
+```powershell
+uv run --no-project --python 3.14 scripts\build_release.py --repo . --output C:\releases\kokoro-onnx
+```
+
+The output directory must not already exist. The builder emits a wheel, source
+distribution, SHA-256 manifest, and source-commit provenance. Pass `--javascript`
+when building the sibling Kokoro repository to include its tested npm package
+and production web-demo ZIP. An optional `--index-url` selects a build-dependency
+mirror without changing the project lock.
+
+A clean source build is not a claim that every platform/model is production-ready.
+Retain the documented compatibility limitations in GitHub release notes.
+See the [release guide](https://dayour.github.io/kokoro-onnx/releases/).
+
 ## Publish new version
 
 ```console
