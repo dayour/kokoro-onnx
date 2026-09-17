@@ -37,6 +37,18 @@ class Timing:
 
 def token_edges(duration: NDArray[np.int64], samples: int) -> NDArray[np.int64]:
     """Sample offset of every token boundary, the leading pad included."""
+    if (
+        duration.ndim != 1
+        or not duration.size
+        or not np.isfinite(duration).all()
+        or np.any(duration < 0)
+        or duration.sum() <= 0
+    ):
+        raise ValueError(
+            "Token durations must be a finite non-negative vector with a positive total"
+        )
+    if samples < 0:
+        raise ValueError("The audio sample count must be non-negative")
     frames = np.concatenate([[0], np.cumsum(duration)])
     return np.round(frames * (samples / frames[-1])).astype(np.int64)
 

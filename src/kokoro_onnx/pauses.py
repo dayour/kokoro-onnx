@@ -35,6 +35,8 @@ def wanted_after(phoneme: str, sentence: float, clause: float) -> float:
 def _quiet_frames(audio: NDArray[np.float32], frame: int) -> NDArray[np.bool_]:
     """Which frames of the audio are quiet enough to be part of a pause."""
     usable = len(audio) // frame * frame
+    if not usable:
+        return np.empty(0, dtype=np.bool_)
     loudness = np.sqrt((audio[:usable].reshape(-1, frame) ** 2).mean(1))
     return loudness <= float(loudness.max()) * 10 ** (_QUIET_DB / 20)
 

@@ -86,10 +86,16 @@ free-threaded builds are not currently tested.
 Python 3.14 native wheels are available for Windows x64, Linux x64/ARM64, and
 Apple Silicon macOS 14+. ONNX Runtime does not provide Python 3.14 wheels for
 Intel macOS, which is not supported by this Python 3.14 release.
+An int8 inference regression on macOS is still under investigation; native wheel
+availability alone does not establish model compatibility. Empty or non-finite
+inference output is rejected before trimming, with runtime and provider details.
+Invalid duration vectors are also reported explicitly instead of producing
+invalid timestamps.
+
 The `gpu` extra supports Windows/Linux x64 and installs ONNX Runtime GPU with
-its CUDA 13.x and cuDNN 9.x runtime dependencies. The lock selects CUDA runtime
-13.3.29 and cuDNN 9.25.1.1; native wheels are checked against the supported
-platforms, so Windows does not receive a Linux-only cuBLAS release.
+its CUDA 13.x and cuDNN 9.x runtime dependencies. See `uv.lock` for the pinned
+component versions. Native wheels are checked against the supported platforms,
+so Windows does not receive a Linux-only cuBLAS release.
 
 ```powershell
 uv sync --locked --extra gpu

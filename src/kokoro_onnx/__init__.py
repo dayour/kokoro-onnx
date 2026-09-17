@@ -134,7 +134,20 @@ class Kokoro:
         }
 
         outputs = self.sess.run(None, inputs)
-        audio = np.asarray(outputs[0]).ravel()
+        if not outputs or (self.has_timings and len(outputs) < 2):
+            raise RuntimeError(
+                "ONNX inference did not return the expected audio outputs"
+            )
+        audio = np.asarray(outputs[0], dtype=np.float32).ravel()
+        if not audio.size or not np.isfinite(audio).all():
+            raise RuntimeError(
+                f"ONNX inference returned empty or non-finite audio "
+                f"({audio.size} samples, {np.count_nonzero(~np.isfinite(audio))} "
+                f"non-finite). ONNX Runtime {rt.__version__}, "
+                f"{platform.system()}/{platform.machine()}, "
+                f"providers={self.sess.get_providers()}. "
+                "Check the model and execution provider before trimming or saving."
+            )
         duration = np.asarray(outputs[1]).ravel() if self.has_timings else None
 
         audio_duration = len(audio) / SAMPLE_RATE

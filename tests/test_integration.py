@@ -43,6 +43,10 @@ class InferenceTests(unittest.TestCase):
             self.assert_audio(restored, restored_rate)
             np.testing.assert_allclose(restored, audio, atol=1 / 32768)
 
+    def test_inference_before_trimming(self):
+        audio, rate = self.kokoro.create("Hello, world!", "af_sarah", trim=False)
+        self.assert_audio(audio, rate)
+
     def test_real_streaming(self):
         async def collect():
             return [
