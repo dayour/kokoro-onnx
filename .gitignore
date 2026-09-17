@@ -31,3 +31,10 @@ models/
 .playwright-mcp/
 *.mp4
 *.txt
+
+# Documentation source and generated site
+!website/package.json
+!website/package-lock.json
+website/node_modules/
+website/.docusaurus/
+website/build/

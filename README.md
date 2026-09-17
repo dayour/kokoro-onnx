@@ -1,5 +1,8 @@
 # kokoro-onnx
 
+[Complete speech-stack wiki](https://dayour.github.io/kokoro-onnx/) |
+[Fork releases](https://github.com/dayour/kokoro-onnx/releases)
+
 ![Python Version](https://img.shields.io/badge/python-3.14-blue)
 [![PyPI Release](https://img.shields.io/pypi/v/kokoro-onnx.svg)](https://pypi.org/project/kokoro-onnx/)
 [![Github Model Releases](https://img.shields.io/github/v/release/thewh1teagle/kokoro-onnx)](https://github.com/thewh1teagle/kokoro-onnx/releases)

@@ -1,0 +1,101 @@
+:root {
+  color-scheme: light;
+  --cf-teal: #00b4d8;
+  --cf-violet: #7b2ff7;
+  --cf-deep-navy: #0d1b2a;
+  --cf-midnight: #1b2838;
+  --cf-slate: #415a77;
+  --cf-ice: #e0fbfc;
+  --cf-snow: #f8fffe;
+  --cf-warm-white: #fafcfd;
+  --cf-coral: #ff6b6b;
+  --cf-gold: #ffd93d;
+  --cf-mint: #6bcb77;
+  --cf-soft-purple: #c77dff;
+  --cf-ocean: #0077b6;
+  --cf-lilac: #f0e6ff;
+  --cp-bg: var(--cf-warm-white);
+  --cp-bg-elevated: var(--cf-snow);
+  --cp-surface: var(--cf-snow);
+  --cp-surface-soft: var(--cf-ice);
+  --cp-border: color-mix(in srgb, var(--cf-slate) 22%, var(--cf-snow));
+  --cp-border-strong: var(--cf-slate);
+  --cp-text: var(--cf-midnight);
+  --cp-text-muted: var(--cf-slate);
+  --cp-text-soft: var(--cf-slate);
+  --cp-accent: var(--cf-violet);
+  --cp-accent-hover: #6226c6;
+  --cp-accent-soft: var(--cf-lilac);
+  --cp-accent-fg: var(--cf-snow);
+  --cp-success: var(--cf-mint);
+  --cp-danger: var(--cf-coral);
+  --cp-warning: var(--cf-gold);
+  --cp-link: var(--cf-ocean);
+  --cp-shadow: 0 2px 8px rgb(13 27 42 / 8%);
+  --cp-highlight: color-mix(in srgb, var(--cf-teal) 12%, var(--cf-snow));
+  --cp-gradient-flow: linear-gradient(100deg, var(--cf-teal), var(--cf-violet));
+}
+
+:root,
+html[data-theme="dark"] {
+  --ifm-color-primary: var(--cp-accent);
+  --ifm-color-primary-dark: var(--cp-accent-hover);
+  --ifm-color-primary-darker: var(--cp-accent-hover);
+  --ifm-color-primary-darkest: var(--cp-accent-hover);
+  --ifm-color-primary-light: var(--cp-accent);
+  --ifm-color-primary-lighter: var(--cp-accent);
+  --ifm-color-primary-lightest: var(--cp-accent);
+  --ifm-background-color: var(--cp-bg);
+  --ifm-background-surface-color: var(--cp-surface);
+  --ifm-font-color-base: var(--cp-text);
+  --ifm-font-color-secondary: var(--cp-text-muted);
+  --ifm-heading-color: var(--cp-text);
+  --ifm-link-color: var(--cp-link);
+  --ifm-navbar-background-color: var(--cp-surface);
+  --ifm-navbar-link-color: var(--cp-text);
+  --ifm-menu-color: var(--cp-text-muted);
+  --ifm-menu-color-background-active: var(--cp-accent-soft);
+  --ifm-table-background: var(--cp-surface);
+  --ifm-table-stripe-background: var(--cp-surface-soft);
+  --ifm-table-border-color: var(--cp-border);
+  --ifm-footer-background-color: var(--cp-surface-soft);
+  --ifm-footer-color: var(--cp-text);
+  --ifm-footer-title-color: var(--cp-text);
+  --ifm-footer-link-color: var(--cp-link);
+  --ifm-code-background: var(--cp-surface-soft);
+  --ifm-toc-border-color: var(--cp-border);
+  --ifm-font-family-base: Calibri, Candara, "Trebuchet MS", sans-serif;
+  --ifm-heading-font-family: "Trebuchet MS", Calibri, sans-serif;
+  --ifm-font-family-monospace: Consolas, "Liberation Mono", monospace;
+  --ifm-global-radius: 6px;
+  --ifm-code-font-size: 92%;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --cp-bg: var(--cf-deep-navy);
+  --cp-bg-elevated: var(--cf-midnight);
+  --cp-surface: var(--cf-midnight);
+  --cp-surface-soft: color-mix(in srgb, var(--cf-teal) 9%, var(--cf-midnight));
+  --cp-border: var(--cf-slate);
+  --cp-border-strong: #b9cdda;
+  --cp-text: var(--cf-snow);
+  --cp-text-muted: #b9cdda;
+  --cp-text-soft: var(--cf-ice);
+  --cp-accent: var(--cf-soft-purple);
+  --cp-accent-hover: var(--cf-ice);
+  --cp-accent-soft: color-mix(in srgb, var(--cf-violet) 18%, var(--cf-midnight));
+  --cp-accent-fg: var(--cf-deep-navy);
+  --cp-link: var(--cf-teal);
+  --cp-shadow: 0 2px 8px rgb(13 27 42 / 30%);
+  --cp-highlight: color-mix(in srgb, var(--cf-teal) 15%, var(--cf-midnight));
+}
+
+.navbar { border-top: 4px solid transparent; border-image: var(--cp-gradient-flow) 1; box-shadow: var(--cp-shadow); }
+.footer { border-top: 1px solid var(--cp-border); }
+.markdown table { display: block; max-width: 100%; overflow-x: auto; }
+.markdown pre { max-width: 100%; }
+.markdown a { text-decoration: underline; text-underline-offset: 3px; }
+.menu__link--active { color: var(--cp-accent); background: var(--cp-accent-soft); }
+:focus-visible { outline: 3px solid var(--cp-link); outline-offset: 3px; }
+::selection { background: var(--cp-highlight); color: var(--cp-text); }
