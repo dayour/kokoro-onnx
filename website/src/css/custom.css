@@ -92,7 +92,8 @@ html[data-theme="dark"] {
 }
 
 .navbar { border-top: 4px solid transparent; border-image: var(--cp-gradient-flow) 1; box-shadow: var(--cp-shadow); }
-.navbar pre[aria-hidden="true"] { left: 0; top: 0; }
+/* Keep the search plugin's invisible text measurer out of mobile scroll layout. */
+.navbar pre[aria-hidden="true"] { position: fixed !important; left: 0; top: 0; }
 .footer { border-top: 1px solid var(--cp-border); }
 .markdown table { display: block; max-width: 100%; overflow-x: auto; }
 .markdown pre { max-width: 100%; }
